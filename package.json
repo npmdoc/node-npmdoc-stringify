@@ -1,17 +1,40 @@
 {
-    "buildNpmdoc":"stringify",
+    "author": "kai zhu <kaizhu256@gmail.com>",
+    "buildNpmdoc": "stringify",
+    "description": "api documentation for [stringify (v5.1.0)](https://github.com/JohnPostlethwait/stringify#readme) [![npm package](https://img.shields.io/npm/v/npmdoc-stringify.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-stringify) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-stringify.svg)](https://travis-ci.org/npmdoc/node-npmdoc-stringify)",
     "devDependencies": {
-        "stringify": "*",
         "electron-lite": "kaizhu256/node-electron-lite#alpha",
+        "stringify": "*",
         "utility2": "kaizhu256/node-utility2#alpha"
     },
-    "name":"npmdoc-stringify",
+    "engines": {
+        "node": ">=4.0"
+    },
+    "homepage": "https://github.com/npmdoc/node-npmdoc-stringify",
+    "keywords": [
+        "documentation",
+        "stringify"
+    ],
+    "license": "MIT",
+    "main": "lib.npmdoc_stringify.js",
+    "name": "npmdoc-stringify",
+    "nameAlias": "npmdoc_stringify",
+    "nameOriginal": "npmdoc-stringify",
+    "os": [
+        "darwin",
+        "linux"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/npmdoc/node-npmdoc-stringify"
     },
     "scripts": {
-        "build-ci": "utility2 shReadmeTest build_ci.sh"
+        "build-ci": "utility2 shReadmeTest build_ci.sh",
+        "env": "env",
+        "heroku-postbuild": "(set -e; npm install \"kaizhu256/node-utility2#alpha\"; utility2 shDeployHeroku)",
+        "postinstall": "if [ -f npm_scripts.sh ]; then ./npm_scripts.sh postinstall; fi",
+        "start": "(set -e; export PORT=${PORT:-8080}; utility2 start test.js)",
+        "test": "(set -e; export PORT=$(utility2 shServerPortRandom); utility2 test test.js)"
     },
     "version": "0.0.1"
 }
