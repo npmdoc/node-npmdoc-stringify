@@ -150,6 +150,97 @@
 
     </ol></li>
 
+    <li class="apidocModuleLi"><a href="#apidoc.module.stringify.stringify">module stringify.stringify</a><ol>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.stringify">
+            function <span class="apidocSignatureSpan">stringify.</span>stringify
+            <span class="apidocSignatureSpan">(content)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.getExtensions">
+            function <span class="apidocSignatureSpan">stringify.stringify.</span>getExtensions
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.getMinifyOptions">
+            function <span class="apidocSignatureSpan">stringify.stringify.</span>getMinifyOptions
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.getTransformOptions">
+            function <span class="apidocSignatureSpan">stringify.stringify.</span>getTransformOptions
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.minify">
+            function <span class="apidocSignatureSpan">stringify.stringify.</span>minify
+            <span class="apidocSignatureSpan">(filename, contents, options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.registerWithRequire">
+            function <span class="apidocSignatureSpan">stringify.stringify.</span>registerWithRequire
+            <span class="apidocSignatureSpan">(options)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.stringify.stringify.requireStringify">
+            function <span class="apidocSignatureSpan">stringify.stringify.</span>requireStringify
+            <span class="apidocSignatureSpan">(module, filename)</span>
+            </a>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">stringify.stringify.</span>DEFAULT_MINIFY_OPTIONS</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">stringify.stringify.</span>MINIFY_TRANSFORM_OPTIONS</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">stringify.stringify.</span>NODE_REQUIRE_OPTIONS</span>
+
+        </li>
+
+        <li>
+
+            <span class="apidocSignatureSpan">object <span class="apidocSignatureSpan">stringify.stringify.</span>TRANSFORM_OPTIONS</span>
+
+        </li>
+
+    </ol></li>
+
 </ol></div>
 
 <div class="apidocSectionDiv">
@@ -166,7 +257,23 @@
     <li>description and source-code<pre class="apidocCodePre">function stringify(content) {
   return &#x27;module.exports = &#x27; + JSON.stringify(content) + &#x27;;\n&#x27;;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+/**
+* Stringifies the content
+* @param   {string}    content
+* @returns {string}
+*/
+function stringify (content) {
+ return &#x27;module.exports = &#x27; + JSON.<span class="apidocCodeKeywordSpan">stringify</span>(content) + &#x27;;\n&#x27;;
+}
+
+/**
+* Takes a set of user-supplied options, and ensure file configuration
+* settings is in the correct form for &#x27;browserify-transform-tools&#x27;.
+* @param   {object | array}    options
+* @returns {object}
+...</pre></li>
     </ul>
 
 
@@ -289,7 +396,23 @@
 
   return contents;
 }</pre></li>
-    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * @return  {string}
+ */
+function minify(filename, contents, options) {
+  var minifier = getMinifyOptions(options);
+
+  if (minifier.requested) {
+    if (!tools.skipFile(filename, minifier.config, MINIFY_TRANSFORM_OPTIONS)) {
+      return htmlMinifier.<span class="apidocCodeKeywordSpan">minify</span>(contents, minifier.options);
+    }
+  }
+
+  return contents;
+}
+
+/**
+...</pre></li>
     </ul>
 
 
@@ -334,6 +457,249 @@ minifyOptions: {
     <h2>
         <a href="#apidoc.element.stringify.requireStringify" id="apidoc.element.stringify.requireStringify">
         function <span class="apidocSignatureSpan">stringify.</span>requireStringify
+        <span class="apidocSignatureSpan">(module, filename)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function requireStringify(module, filename) {
+  var contents;
+
+  try {
+    contents = fs.readFileSync(path.resolve(filename), &#x27;utf8&#x27;);
+  } catch (error) {
+    throw new Error(&#x27;Stringify could not find module \&#x27;&#x27; + path.resolve(filename) + &#x27;\&#x27;.&#x27;);
+  }
+
+  module.exports = minify(filename, contents, NODE_REQUIRE_OPTIONS);
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<div class="apidocSectionDiv">
+<h1><a href="#apidoc.module.stringify.stringify" id="apidoc.module.stringify.stringify">module stringify.stringify</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.stringify" id="apidoc.element.stringify.stringify.stringify">
+        function <span class="apidocSignatureSpan">stringify.</span>stringify
+        <span class="apidocSignatureSpan">(content)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function stringify(content) {
+  return &#x27;module.exports = &#x27; + JSON.stringify(content) + &#x27;;\n&#x27;;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+/**
+* Stringifies the content
+* @param   {string}    content
+* @returns {string}
+*/
+function stringify (content) {
+ return &#x27;module.exports = &#x27; + JSON.<span class="apidocCodeKeywordSpan">stringify</span>(content) + &#x27;;\n&#x27;;
+}
+
+/**
+* Takes a set of user-supplied options, and ensure file configuration
+* settings is in the correct form for &#x27;browserify-transform-tools&#x27;.
+* @param   {object | array}    options
+* @returns {object}
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.getExtensions" id="apidoc.element.stringify.stringify.getExtensions">
+        function <span class="apidocSignatureSpan">stringify.stringify.</span>getExtensions
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function getExtensions(options) {
+<span class="apidocCodeCommentSpan">  /**
+   * The file extensions which are stringified by default.
+   * @type    {string[]}
+   */
+</span>  var extensions = TRANSFORM_OPTIONS.includeExtensions;
+
+  if (options) {
+    if (Object.prototype.toString.call(options) === &#x27;[object Array]&#x27;) {
+      extensions = options;
+    } else if (options.extensions &#x26;&#x26; options.extensions._) {
+      extensions = options.extensions._;
+    } else if(options.extensions) {
+      extensions = options.extensions;
+    }
+  }
+
+  // Lowercase all file extensions for case-insensitive matching.
+  extensions = extensions.map(function (ext) {
+    return ext.toLowerCase();
+  });
+
+  return extensions;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.getMinifyOptions" id="apidoc.element.stringify.stringify.getMinifyOptions">
+        function <span class="apidocSignatureSpan">stringify.stringify.</span>getMinifyOptions
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function getMinifyOptions(options) {
+  if (!options || !options.minify) {
+    return { requested: false };
+  }
+
+  var minifierOpts = options.minifier,
+      minify = { requested: true, options: DEFAULT_MINIFY_OPTIONS };
+
+  if (options.minifyAppliesTo) {
+    minify.config = { appliesTo: options.minifyAppliesTo };
+  } else if (minifierOpts &#x26;&#x26; minifierOpts.extensions) {
+    var extensions = minifierOpts.extensions._ || options.minifier.extensions;
+    minify.config = { appliesTo: { includeExtensions: extensions } };
+  }
+
+  if (options.minifyOptions) {
+    minify.options = options.minifyOptions;
+  } else if (minifierOpts &#x26;&#x26; minifierOpts.options) {
+    minify.options = minifierOpts.options;
+  }
+
+  return minify;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.getTransformOptions" id="apidoc.element.stringify.stringify.getTransformOptions">
+        function <span class="apidocSignatureSpan">stringify.stringify.</span>getTransformOptions
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function getTransformOptions(options) {
+  if (!options) {
+    return {};
+  }
+
+  if (Object.prototype.toString.call(options) === &#x27;[object Array]&#x27;) {
+    options = { appliesTo: { includeExtensions: options }  };
+  }
+
+  if (options.extensions &#x26;&#x26; !options.appliesTo) {
+    var extensions = options.extensions._ || options.extensions;
+    options.appliesTo = { includeExtensions: extensions };
+    delete options.extensions;
+  }
+
+  return options;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.minify" id="apidoc.element.stringify.stringify.minify">
+        function <span class="apidocSignatureSpan">stringify.stringify.</span>minify
+        <span class="apidocSignatureSpan">(filename, contents, options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function minify(filename, contents, options) {
+  var minifier = getMinifyOptions(options);
+
+  if (minifier.requested) {
+    if (!tools.skipFile(filename, minifier.config, MINIFY_TRANSFORM_OPTIONS)) {
+      return htmlMinifier.minify(contents, minifier.options);
+    }
+  }
+
+  return contents;
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+ * @return  {string}
+ */
+function minify(filename, contents, options) {
+  var minifier = getMinifyOptions(options);
+
+  if (minifier.requested) {
+    if (!tools.skipFile(filename, minifier.config, MINIFY_TRANSFORM_OPTIONS)) {
+      return htmlMinifier.<span class="apidocCodeKeywordSpan">minify</span>(contents, minifier.options);
+    }
+  }
+
+  return contents;
+}
+
+/**
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.registerWithRequire" id="apidoc.element.stringify.stringify.registerWithRequire">
+        function <span class="apidocSignatureSpan">stringify.stringify.</span>registerWithRequire
+        <span class="apidocSignatureSpan">(options)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">function registerWithRequire(options) {
+  NODE_REQUIRE_OPTIONS = options || {};
+
+  var exts = getExtensions(NODE_REQUIRE_OPTIONS);
+
+  for (var i = 0; i &#x3c; exts.length; i++) {
+    require.extensions[ exts[i] ] = requireStringify;
+  }
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">...
+
+Allows you to &#x22;stringify&#x22; your non-JS files using the NodeJS module system.
+Please only use Stringify this way in NodeJS (Read: Not the browser/Browserify!)
+
+```javascript
+var stringify = require(&#x27;stringify&#x27;);
+
+stringify.<span class="apidocCodeKeywordSpan">registerWithRequire</span>({
+extensions: [&#x27;.txt&#x27;, &#x27;.html&#x27;],
+minify: true,
+minifyAppliesTo: {
+  includeExtensions: [&#x27;.html&#x27;]
+},
+minifyOptions: {
+  // html-minifier options
+...</pre></li>
+    </ul>
+
+
+
+    <h2>
+        <a href="#apidoc.element.stringify.stringify.requireStringify" id="apidoc.element.stringify.stringify.requireStringify">
+        function <span class="apidocSignatureSpan">stringify.stringify.</span>requireStringify
         <span class="apidocSignatureSpan">(module, filename)</span>
         </a>
     </h2>
